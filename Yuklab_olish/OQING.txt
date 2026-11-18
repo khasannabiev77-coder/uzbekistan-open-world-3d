@@ -1,0 +1,35 @@
+UZBEKISTAN OPEN WORLD 3D — O'YINNI QANDAY OCHISH
+==================================================
+
+FAYLLAR
+  UzbekistanOpenWorld3D.html  — o'yinning o'zi (internetsiz ham ishlaydi)
+  Reklama.html                — animatsion reklama: video (WebM) va rasm (PNG) yuklab olish
+  Reklama_matni.txt           — Telegram / Instagram uchun tayyor reklama matni (3 tilda)
+
+KOMPYUTERDA (Windows)
+  1. UzbekistanOpenWorld3D.html faylini ikki marta bosing — Chrome yoki Edge'da ochiladi.
+  2. "Yangi o'yin" ni bosing.
+  3. Ekranni bir marta bosing — kamera sichqonchaga bog'lanadi.
+  Boshqaruv: WASD — yurish/haydash, Shift — yugurish, Space — sakrash / qo'l tormozi,
+             E — mashinaga o'tirish/tushish va harakat, V — 1-shaxs kamerasi, H — signal,
+             C — mashinani chaqirish, M — xarita, Esc — pauza. Gamepad ham ishlaydi.
+
+TELEFONDA (Android / iPhone)
+  1. UzbekistanOpenWorld3D.html faylini telefonga yuboring (Telegram, USB yoki Google Drive).
+  2. Faylni Chrome (Android) yoki Safari (iPhone) orqali oching.
+     Telegram ichidagi ko'ruvchi o'yinni ochmasligi mumkin — "Brauzerda ochish" ni tanlang.
+  3. Telefonni yotiq holatda ushlang.
+  Boshqaruv: chapda joystick, o'ngda barmoq bilan kamera, tugmalar: Sakrash, Yugurish,
+             E (o'tirish/harakat), mashinada Gaz, Tormoz, Qo'l tormozi.
+  Sekin ishlasa: Pauza -> Sozlamalar -> Grafika -> "Past".
+
+REKLAMA
+  Reklama.html ni kompyuterda Chrome yoki Edge'da oching.
+  Tilni (UZ / RU / EN) va formatni (9:16, 16:9, 1:1) tanlang.
+  "Videoni yuklab olish" — 15 soniya kutasiz, .webm video saqlanadi.
+  "Rasmni yuklab olish" — .png poster saqlanadi.
+  WebM videoni Telegram, YouTube va TikTok qabul qiladi. Instagram uchun MP4 kerak bo'lsa,
+  istalgan bepul konvertor (masalan, VLC: Media -> Convert/Save) bilan MP4 ga aylantiring.
+
+PROGRESS
+  O'yin avtomatik saqlanadi (shu brauzer va shu qurilmada).

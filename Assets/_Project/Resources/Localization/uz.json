@@ -1,0 +1,12 @@
+{
+  "language": "uz",
+  "entries": [
+    { "key": "game.title", "value": "UZBEKISTAN OPEN WORLD 3D" },
+    { "key": "ui.language_button", "value": "Til: O‘zbekcha" },
+    { "key": "ui.jump", "value": "Sakrash" },
+    { "key": "ui.sprint", "value": "Yugurish" },
+    { "key": "ui.interact", "value": "Amal" },
+    { "key": "hint.pc_controls", "value": "WASD — yurish   Shift — tez yugurish   Ctrl — sekin   Space — sakrash   E — amal   F1 — mobil boshqaruv   Esc — kursor" },
+    { "key": "hint.click_to_play", "value": "O‘ynash uchun ekranni bosing" }
+  ]
+}

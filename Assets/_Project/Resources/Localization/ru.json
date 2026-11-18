@@ -1,0 +1,12 @@
+{
+  "language": "ru",
+  "entries": [
+    { "key": "game.title", "value": "UZBEKISTAN OPEN WORLD 3D" },
+    { "key": "ui.language_button", "value": "Язык: Русский" },
+    { "key": "ui.jump", "value": "Прыжок" },
+    { "key": "ui.sprint", "value": "Бег" },
+    { "key": "ui.interact", "value": "Действие" },
+    { "key": "hint.pc_controls", "value": "WASD — ходьба   Shift — бег   Ctrl — медленно   Space — прыжок   E — действие   F1 — мобильное управление   Esc — курсор" },
+    { "key": "hint.click_to_play", "value": "Нажмите на экран, чтобы играть" }
+  ]
+}

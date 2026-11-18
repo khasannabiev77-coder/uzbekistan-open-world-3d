@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#061013">
+<title>Uzbekistan Open World 3D Reklama</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: preview stage on the left, controls column on the right; stacks to one column on phones */
+:root{color-scheme:dark;--ink:#061013;--panel:#0c1c21;--line:rgba(255,255,255,.13);--fg:#f4efe4;--muted:#9fb2b3;--kosh:#19b3b0;--gold:#e9b44c;
+  --display:'Unbounded','Segoe UI',system-ui,sans-serif;--body:'Manrope','Segoe UI',system-ui,sans-serif}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--ink);color:var(--fg);font-family:var(--body)}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}
+.stage{background:#02090b;border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;place-items:center;min-width:0}
+canvas{max-width:100%;max-height:78vh;height:auto;border-radius:10px;display:block}
+.side{display:flex;flex-direction:column;gap:18px;min-width:0}
+h1{font:900 26px/1.05 var(--display);margin:0;text-wrap:balance}
+h1 span{color:var(--kosh)}
+.lead{color:#d7d1c5;line-height:1.55;margin:0}
+.group{display:flex;flex-direction:column;gap:8px}
+.lbl{font:800 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:700 13px/1 var(--body);padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.chip.on{background:var(--fg);color:var(--ink)}
+.btn{font:800 15px/1 var(--body);padding:15px 18px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--fg);cursor:pointer;text-align:left}
+.btn.primary{background:var(--kosh);border-color:var(--kosh);color:#03211f}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#2a1a00}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible,.chip:focus-visible{outline:2px solid var(--kosh);outline-offset:2px}
+.copy{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;white-space:pre-wrap;line-height:1.5;font-size:14px;user-select:text}
+.status{font-size:13px;color:var(--gold);min-height:18px}
+.prog{height:6px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--gold)}
+@media (max-width:880px){.wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="stage"><canvas id="ad" width="1080" height="1920"></canvas></div>
+  <div class="side">
+    <div><div class="lbl" id="tEyebrow"></div><h1>UZBEKISTAN <span>OPEN WORLD 3D</span></h1></div>
+    <p class="lead" id="tLead"></p>
+    <div class="group"><div class="lbl" id="tLang"></div><div class="row" id="langs"></div></div>
+    <div class="group"><div class="lbl" id="tFormat"></div><div class="row" id="formats"></div></div>
+    <div class="group">
+      <button class="btn primary" id="bVideo"></button>
+      <div class="prog" id="prog" hidden><i id="progBar"></i></div>
+      <button class="btn gold" id="bPng"></button>
+      <button class="btn" id="bReplay"></button>
+      <div class="status" id="status" role="status"></div>
+    </div>
+    <div class="group"><div class="lbl" id="tText"></div><div class="copy" id="adText"></div><button class="btn" id="bCopy"></button></div>
+  </div>
+</div>
+
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s);
+const T={
+uz:{eyebrow:"Reklama",lead:"15 soniyalik animatsion reklama. Videoni (WebM) yoki rasmni (PNG) yuklab olib, Instagram, Telegram, TikTok va YouTube'ga joylang.",lang:"Til",format:"Format",vertical:"Vertikal 9:16 (Stories, TikTok)",horizontal:"Gorizontal 16:9 (YouTube)",square:"Kvadrat 1:1 (post)",
+ video:"Videoni yuklab olish (15 s, WebM)",png:"Rasmni yuklab olish (PNG)",replay:"Qaytadan ko‘rsatish",text:"Reklama matni",copy:"Matnni nusxalash",copied:"Nusxalandi",recording:"Video yozilmoqda… 15 soniya kuting",done:"Video tayyor — yuklab olindi",noRec:"Bu brauzer video yozishni qo‘llab-quvvatlamaydi. Chrome yoki Edge'da oching.",noDl:"Yuklab olish bu oynada bloklangan. Faylni kompyuteringizda oching.",
+ s1a:"UZBEKISTAN",s1b:"OPEN WORLD 3D",s2a:"Toshkentdan",s2b:"Samarqandgacha",s2c:"ochiq 3D dunyo",f1:"5 ta mashina va tyuning",f2:"Missiyalar va taksi ishi",f3:"Kun-tun, yomg‘ir, qor",f4:"Uy va biznes sotib ol",l1:"O‘zbekcha · Русский · English",l2:"PC · Android · iOS",cta:"HOZIROQ O‘YNA!",cta2:"Bepul · brauzerda ishlaydi",
+ adText:"🇺🇿 UZBEKISTAN OPEN WORLD 3D\n\nToshkentdan Samarqandgacha — ochiq 3D dunyo!\n🚗 Mashina hayda va tyuning qil\n🎯 Missiyalar, poyga va taksi buyurtmalari\n🌙 Kun-tun almashinuvi, yomg‘ir va qor\n🏠 Uy va choyxona biznesini sotib ol\n\nO‘zbekcha · Русский · English\nPC · Android · iOS — bepul, brauzerda.\n\nKalitni ol va yo‘lga chiq! 🔑"},
+ru:{eyebrow:"Реклама",lead:"Анимированный ролик на 15 секунд. Скачайте видео (WebM) или картинку (PNG) и опубликуйте в Instagram, Telegram, TikTok и YouTube.",lang:"Язык",format:"Формат",vertical:"Вертикальный 9:16 (Stories, TikTok)",horizontal:"Горизонтальный 16:9 (YouTube)",square:"Квадрат 1:1 (пост)",
+ video:"Скачать видео (15 с, WebM)",png:"Скачать картинку (PNG)",replay:"Показать заново",text:"Текст рекламы",copy:"Скопировать текст",copied:"Скопировано",recording:"Записываем видео… подождите 15 секунд",done:"Видео готово — скачано",noRec:"Этот браузер не умеет записывать видео. Откройте в Chrome или Edge.",noDl:"Скачивание в этом окне заблокировано. Откройте файл на своём компьютере.",
+ s1a:"UZBEKISTAN",s1b:"OPEN WORLD 3D",s2a:"От Ташкента",s2b:"до Самарканда",s2c:"открытый 3D мир",f1:"5 машин и тюнинг",f2:"Миссии и работа в такси",f3:"День и ночь, дождь, снег",f4:"Купи дом и бизнес",l1:"O‘zbekcha · Русский · English",l2:"PC · Android · iOS",cta:"ИГРАЙ СЕЙЧАС!",cta2:"Бесплатно · в браузере",
+ adText:"🇺🇿 UZBEKISTAN OPEN WORLD 3D\n\nОт Ташкента до Самарканда — открытый 3D мир!\n🚗 Води и тюнингуй машины\n🎯 Миссии, гонки и заказы такси\n🌙 Смена дня и ночи, дождь и снег\n🏠 Купи дом и бизнес-чайхану\n\nO‘zbekcha · Русский · English\nPC · Android · iOS — бесплатно, в браузере.\n\nБери ключи и в путь! 🔑"},
+en:{eyebrow:"Advert",lead:"A 15-second animated advert. Download the video (WebM) or the image (PNG) and post it on Instagram, Telegram, TikTok and YouTube.",lang:"Language",format:"Format",vertical:"Vertical 9:16 (Stories, TikTok)",horizontal:"Horizontal 16:9 (YouTube)",square:"Square 1:1 (post)",
+ video:"Download video (15 s, WebM)",png:"Download image (PNG)",replay:"Play again",text:"Advert text",copy:"Copy text",copied:"Copied",recording:"Recording video… wait 15 seconds",done:"Video ready — downloaded",noRec:"This browser can't record video. Open it in Chrome or Edge.",noDl:"Downloads are blocked in this window. Open the file on your computer.",
+ s1a:"UZBEKISTAN",s1b:"OPEN WORLD 3D",s2a:"From Tashkent",s2b:"to Samarkand",s2c:"an open 3D world",f1:"5 cars and tuning",f2:"Missions and taxi jobs",f3:"Day and night, rain, snow",f4:"Buy a house and a business",l1:"O‘zbekcha · Русский · English",l2:"PC · Android · iOS",cta:"PLAY NOW!",cta2:"Free · runs in your browser",
+ adText:"🇺🇿 UZBEKISTAN OPEN WORLD 3D\n\nFrom Tashkent to Samarkand — an open 3D world!\n🚗 Drive and tune your cars\n🎯 Missions, races and taxi orders\n🌙 Day and night cycle, rain and snow\n🏠 Buy a house and a teahouse business\n\nO‘zbekcha · Русский · English\nPC · Android · iOS — free, in your browser.\n\nGrab the keys and hit the road! 🔑"}};
+let lang=(navigator.language||'uz').toLowerCase().startsWith('ru')?'ru':(navigator.language||'').toLowerCase().startsWith('en')?'en':'uz';
+let fmt='vertical';const SIZES={vertical:[1080,1920],horizontal:[1920,1080],square:[1080,1080]};
+const cv=$('#ad'),g=cv.getContext('2d');const DUR=15;let t0=performance.now();let recording=false;
+const tx=k=>T[lang][k];
+
+/* deterministic skyline */
+let seed=7;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+function makeLayer(n,minH,maxH,domeP,minaretP){seed=n*97+13;const items=[];let x=0;while(x<2400){const w=40+rnd()*110,h=minH+rnd()*(maxH-minH);const r=rnd();items.push({x,w,h,dome:r<domeP,minaret:r>1-minaretP,win:rnd()});x+=w+rnd()*24;}return items;}
+const far=makeLayer(1,120,420,0.08,0.05),mid=makeLayer(2,90,300,0.2,0.1),nearL=makeLayer(3,60,170,0.35,0.12);
+const lerp=(a,b,k)=>a+(b-a)*k,clamp=(v,a,b)=>v<a?a:v>b?b:v,ease=k=>k<0?0:k>1?1:1-Math.pow(1-k,3);
+const mix=(c1,c2,k)=>{const p=c=>c.replace('#','').match(/\w\w/g).map(h=>parseInt(h,16));const a=p(c1),b=p(c2);return '#'+a.map((v,i)=>Math.round(lerp(v,b[i],k)).toString(16).padStart(2,'0')).join('');};
+
+function drawLayer(items,W,base,scale,off,col,winCol,winK){g.fillStyle=col;for(const b of items){const x=((b.x-off)%2400+2400)%2400-200;const X=x*scale,w=b.w*scale,h=b.h*scale;if(X>W+50||X+w<-50)continue;
+  g.fillRect(X,base-h,w,h);if(b.dome){g.beginPath();g.ellipse(X+w/2,base-h,w*0.38,w*0.42,0,Math.PI,0);g.fill();g.fillRect(X+w/2-2*scale,base-h-w*0.42-14*scale,4*scale,14*scale);}
+  if(b.minaret){g.fillRect(X+w+4*scale,base-h*1.6,10*scale,h*1.6);g.beginPath();g.arc(X+w+9*scale,base-h*1.6,8*scale,Math.PI,0);g.fill();}
+  if(winK>0&&!b.dome){g.fillStyle=winCol;for(let yy=base-h+12*scale;yy<base-14*scale;yy+=22*scale)for(let xx=X+8*scale;xx<X+w-10*scale;xx+=18*scale){if(((xx*7+yy*13+b.win*100)|0)%5<2)g.fillRect(xx,yy,8*scale,10*scale);}g.fillStyle=col;}}}
+
+function drawCar(x,y,s,night,time){g.save();g.translate(x,y);g.scale(s,s);
+  if(night>0.3){const gr=g.createLinearGradient(150,0,600,0);gr.addColorStop(0,'rgba(255,240,190,.55)');gr.addColorStop(1,'rgba(255,240,190,0)');g.fillStyle=gr;g.beginPath();g.moveTo(150,-38);g.lineTo(620,-80);g.lineTo(620,30);g.lineTo(150,-18);g.fill();}
+  g.fillStyle='#e9b44c';g.beginPath();g.moveTo(-150,-20);g.lineTo(-140,-62);g.lineTo(-60,-70);g.lineTo(-10,-112);g.lineTo(80,-112);g.lineTo(130,-70);g.lineTo(160,-58);g.lineTo(162,-20);g.closePath();g.fill();
+  g.fillStyle='#1b2a33';g.beginPath();g.moveTo(-40,-72);g.lineTo(-2,-104);g.lineTo(35,-104);g.lineTo(35,-72);g.closePath();g.fill();g.beginPath();g.moveTo(45,-72);g.lineTo(45,-104);g.lineTo(76,-104);g.lineTo(112,-72);g.closePath();g.fill();
+  g.fillStyle='#1aa6a6';g.fillRect(-150,-42,312,6);g.fillStyle='#fff6d8';g.fillRect(150,-56,12,12);g.fillStyle='#e2574c';g.fillRect(-152,-56,8,12);
+  for(const wx of [-92,100]){g.fillStyle='#141414';g.beginPath();g.arc(wx,-14,30,0,Math.PI*2);g.fill();g.fillStyle='#c9cdd1';g.beginPath();g.arc(wx,-14,14,0,Math.PI*2);g.fill();
+    g.strokeStyle='#555';g.lineWidth=4;for(let k=0;k<3;k++){const a=-time*14+k*2.09;g.beginPath();g.moveTo(wx,-14);g.lineTo(wx+Math.cos(a)*14,-14+Math.sin(a)*14);g.stroke();}}
+  g.restore();}
+
+function textBlock(lines,cx,cy,W,alpha,lift){g.save();g.globalAlpha=alpha;g.textAlign='center';g.textBaseline='alphabetic';let y=cy+lift;for(const l of lines){g.font=l.font;g.fillStyle=l.color;g.shadowColor='rgba(0,0,0,.45)';g.shadowBlur=18;
+  let size=parseFloat(l.font.match(/(\d+)px/)[1]);while(g.measureText(l.text).width>W*0.9&&size>20){size-=4;g.font=l.font.replace(/\d+px/,size+'px');}g.fillText(l.text,cx,y);y+=l.gap;}g.restore();}
+const fade=(time,a,b)=>clamp(Math.min((time-a)/0.5,(b-time)/0.5),0,1);
+
+function render(time){const [W,H]=SIZES[fmt];const u=Math.min(W,H)/1080;const p=time/DUR;
+  const night=clamp((p-0.45)/0.35,0,1),dusk=clamp(1-Math.abs(p-0.42)/0.18,0,1);
+  const sky=g.createLinearGradient(0,0,0,H);sky.addColorStop(0,mix(mix('3d8fc9','1d3a6e',dusk*0.6),'050b1f',night));sky.addColorStop(0.62,mix(mix('a8d4ef','f2a36b',dusk),'15244a',night));sky.addColorStop(1,mix('e8d8b4','1a2238',night));g.fillStyle=sky;g.fillRect(0,0,W,H);
+  const sunY=lerp(H*0.18,H*0.62,clamp(p/0.6,0,1));g.fillStyle=night<0.7?`rgba(255,226,150,${1-night})`:'rgba(0,0,0,0)';g.beginPath();g.arc(W*0.74,sunY,90*u,0,Math.PI*2);g.fill();
+  if(night>0.2){g.fillStyle=`rgba(255,255,255,${night})`;seed=99;for(let k=0;k<140;k++){g.fillRect(rnd()*W,rnd()*H*0.55,2*u,2*u);}g.fillStyle=`rgba(244,240,226,${night})`;g.beginPath();g.arc(W*0.2,H*0.14,46*u,0,Math.PI*2);g.fill();}
+  const ground=H*(fmt==='vertical'?0.74:0.78);const scroll=time*60;
+  drawLayer(far,W,ground-40*u,u*1.0,scroll*0.25,mix(mix('9fb6c6','7a6f86',dusk),'1c2944',night),'rgba(255,215,140,.8)',night);
+  drawLayer(mid,W,ground-12*u,u*1.25,scroll*0.5,mix(mix('6f8796','5a4b5e',dusk),'121b30',night),'rgba(255,220,150,.9)',night);
+  drawLayer(nearL,W,ground,u*1.6,scroll*0.85,mix(mix('3f5664','3b2f3f',dusk),'0b1222',night),'rgba(255,225,160,.95)',night);
+  g.fillStyle=mix('3a3d42','15181d',night);g.fillRect(0,ground,W,H-ground);g.fillStyle=mix('aaa497','3a3a3a',night);g.fillRect(0,ground,W,10*u);
+  g.fillStyle=mix('ece6d4','8a8577',night);const dash=120*u,off=(time*900*u)%(dash*2);for(let x=-off;x<W;x+=dash*2)g.fillRect(x,ground+(H-ground)*0.42,dash,10*u);
+  g.fillStyle='rgba(25,179,176,.9)';for(let x=0;x<W;x+=40*u){g.beginPath();g.moveTo(x,H-26*u);g.lineTo(x+20*u,H-46*u);g.lineTo(x+40*u,H-26*u);g.lineTo(x+20*u,H-6*u);g.closePath();g.fill();}
+  const carX=lerp(-300*u,W*0.42,ease(time/2.2))+Math.sin(time*2)*6*u;drawCar(carX,ground+(H-ground)*0.33,u*1.25,night,time);
+  const cx=W/2,top=fmt==='vertical'?H*0.2:fmt==='square'?H*0.2:H*0.24,TW=W;
+  const big=(s)=>`900 ${Math.round(s*u)}px Unbounded, 'Arial Black', sans-serif`,mid2=(s)=>`800 ${Math.round(s*u)}px Manrope, Arial, sans-serif`;
+  const sc=fmt==='horizontal'?0.85:1;
+  let a=fade(time,0.2,3.2);if(a>0)textBlock([{text:tx('s1a'),font:big(118*sc),color:'#ffffff',gap:110*u*sc},{text:tx('s1b'),font:big(66*sc),color:'#19b3b0',gap:0}],cx,top,TW,a,(1-a)*30*u);
+  a=fade(time,3.2,6.2);if(a>0)textBlock([{text:tx('s2a'),font:big(84*sc),color:'#ffffff',gap:96*u*sc},{text:tx('s2b'),font:big(84*sc),color:'#e9b44c',gap:84*u*sc},{text:tx('s2c'),font:mid2(52*sc),color:'#f4efe4',gap:0}],cx,top,TW,a,(1-a)*30*u);
+  a=fade(time,6.2,9.6);if(a>0){const items=['🚗  '+tx('f1'),'🎯  '+tx('f2'),'🌙  '+tx('f3'),'🏠  '+tx('f4')];g.save();g.textAlign='center';
+    items.forEach((s,i)=>{const k=clamp((time-6.4-i*0.45)/0.4,0,1)*a;g.globalAlpha=k;g.font=mid2(58*sc);g.fillStyle='#ffffff';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=16;g.fillText(s,cx+(1-k)*-40*u,top+i*92*u*sc);});g.restore();}
+  a=fade(time,9.6,12.4);if(a>0)textBlock([{text:tx('l1'),font:mid2(56*sc),color:'#ffffff',gap:96*u*sc},{text:tx('l2'),font:big(64*sc),color:'#19b3b0',gap:0}],cx,top,TW,a,(1-a)*30*u);
+  a=clamp((time-12.4)/0.5,0,1);if(a>0){const pulse=1+Math.sin(time*6)*0.03;g.save();g.globalAlpha=a;g.translate(cx,top+20*u);g.scale(pulse,pulse);const bw=Math.min(W*0.84,820*u),bh=150*u;
+    g.fillStyle='#e9b44c';g.beginPath();if(g.roundRect)g.roundRect(-bw/2,-bh/2-40*u,bw,bh,34*u);else g.rect(-bw/2,-bh/2-40*u,bw,bh);g.fill();g.fillStyle='#2a1a00';g.textAlign='center';g.textBaseline='middle';g.font=big(72*sc);
+    let s2=72*sc;while(g.measureText(tx('cta')).width>bw*0.9&&s2>24){s2-=4;g.font=big(s2);}g.fillText(tx('cta'),0,-40*u);g.restore();
+    textBlock([{text:tx('cta2'),font:mid2(46*sc),color:'#ffffff',gap:70*u},{text:'UZBEKISTAN OPEN WORLD 3D',font:big(40*sc),color:'#19b3b0',gap:0}],cx,top+170*u,TW,a,0);}
+}
+
+function loop(now){const time=((now-t0)/1000)%DUR;render(time);requestAnimationFrame(loop);}
+function applyFormat(){const [W,H]=SIZES[fmt];cv.width=W;cv.height=H;}
+function chips(el,items,cur,on){el.innerHTML='';items.forEach(([v,l])=>{const b=document.createElement('button');b.className='chip'+(v===cur?' on':'');b.textContent=l;b.onclick=()=>on(v);el.appendChild(b);});}
+function ui(){document.documentElement.lang=lang;$('#tEyebrow').textContent=tx('eyebrow');$('#tLead').textContent=tx('lead');$('#tLang').textContent=tx('lang');$('#tFormat').textContent=tx('format');
+  $('#bVideo').textContent=tx('video');$('#bPng').textContent=tx('png');$('#bReplay').textContent=tx('replay');$('#tText').textContent=tx('text');$('#bCopy').textContent=tx('copy');$('#adText').textContent=tx('adText');
+  chips($('#langs'),[['uz','O‘zbekcha'],['ru','Русский'],['en','English']],lang,v=>{lang=v;ui();});chips($('#formats'),[['vertical',tx('vertical')],['horizontal',tx('horizontal')],['square',tx('square')]],fmt,v=>{if(recording)return;fmt=v;applyFormat();ui();});}
+function download(blob,name){try{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);return true;}catch(e){$('#status').textContent=tx('noDl');return false;}}
+$('#bReplay').onclick=()=>{t0=performance.now();};
+$('#bPng').onclick=()=>{render(13.6);cv.toBlob(b=>{if(b)download(b,`UzbekistanOpenWorld3D_${fmt}_${lang}.png`);else $('#status').textContent=tx('noDl');});};
+$('#bVideo').onclick=()=>{if(recording)return;if(!window.MediaRecorder||!cv.captureStream){$('#status').textContent=tx('noRec');return;}
+  const types=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];const type=types.find(x=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(x))||'';
+  let rec;try{rec=new MediaRecorder(cv.captureStream(30),type?{mimeType:type,videoBitsPerSecond:8e6}:{});}catch(e){$('#status').textContent=tx('noRec');return;}
+  const chunks=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};recording=true;$('#bVideo').disabled=true;$('#status').textContent=tx('recording');$('#prog').hidden=false;
+  rec.onstop=()=>{recording=false;$('#bVideo').disabled=false;$('#prog').hidden=true;if(download(new Blob(chunks,{type:'video/webm'}),`UzbekistanOpenWorld3D_${fmt}_${lang}.webm`))$('#status').textContent=tx('done');};
+  t0=performance.now();rec.start(250);const start=performance.now();const tick=()=>{const k=(performance.now()-start)/(DUR*1000);$('#progBar').style.width=Math.min(100,k*100)+'%';if(k<1)requestAnimationFrame(tick);else rec.stop();};tick();};
+$('#bCopy').onclick=async()=>{try{await navigator.clipboard.writeText(tx('adText'));$('#status').textContent=tx('copied');}catch(e){const r=document.createRange();r.selectNodeContents($('#adText'));const s=getSelection();s.removeAllRanges();s.addRange(r);}};
+ui();applyFormat();requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>

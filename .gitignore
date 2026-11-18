@@ -1,0 +1,19 @@
+# Generated
+web/game.publish.html
+*.zip
+node_modules/
+
+# Unity (when a full Unity project is added)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+*.csproj
+*.sln
+
+# OS
+Thumbs.db
+.DS_Store
